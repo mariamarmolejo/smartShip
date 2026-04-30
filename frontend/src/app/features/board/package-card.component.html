@@ -1,0 +1,23 @@
+<article class="package-card">
+  <header>
+    <span>{{ packageItem().trackingId }}</span>
+    <strong>{{ packageItem().peso }} kg</strong>
+  </header>
+
+  <p>{{ packageItem().destinatario }}</p>
+
+  <dl>
+    <div>
+      <dt>Largo</dt>
+      <dd>{{ packageItem().dimensiones.largo }}</dd>
+    </div>
+    <div>
+      <dt>Ancho</dt>
+      <dd>{{ packageItem().dimensiones.ancho }}</dd>
+    </div>
+    <div>
+      <dt>Alto</dt>
+      <dd>{{ packageItem().dimensiones.alto }}</dd>
+    </div>
+  </dl>
+</article>

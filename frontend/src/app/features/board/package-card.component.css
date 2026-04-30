@@ -1,0 +1,72 @@
+:host {
+  display: block;
+}
+
+.package-card {
+  background: #ffffff;
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+  cursor: grab;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.package-card:active {
+  cursor: grabbing;
+}
+
+header {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+span {
+  color: #1f6feb;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+strong {
+  color: #172033;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+p {
+  color: #172033;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0;
+}
+
+dl {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+div {
+  background: #f4f7fb;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+dt,
+dd {
+  margin: 0;
+}
+
+dt {
+  color: #60708a;
+  font-size: 0.72rem;
+}
+
+dd {
+  color: #172033;
+  font-size: 0.9rem;
+  font-weight: 700;
+}

@@ -1,0 +1,54 @@
+<main class="page">
+  <header class="page-header">
+    <div>
+      <p>SmartShip</p>
+      <h1>Tablero logistico</h1>
+    </div>
+
+    <nav>
+      @if (authService.isAdmin()) {
+        <a routerLink="/packages/create">Crear paquete</a>
+      }
+      <button type="button" (click)="logout()">Cerrar sesion</button>
+    </nav>
+  </header>
+
+  @if (packageService.errorMessage()) {
+    <p class="alert" role="alert">{{ packageService.errorMessage() }}</p>
+  }
+
+  @if (packageService.isLoading()) {
+    <section class="loading" aria-live="polite">Cargando paquetes...</section>
+  } @else {
+    <section class="board" cdkDropListGroup aria-label="Tablero de paquetes">
+      @for (column of columns; track column.status) {
+        <article class="column">
+          <header class="column-header">
+            <h2>{{ column.title }}</h2>
+            <span>{{ packageService.packagesByStatus()[column.status].length }}</span>
+          </header>
+
+          <div
+            class="package-list"
+            cdkDropList
+            [id]="dropListId(column.status)"
+            [cdkDropListData]="packageService.packagesByStatus()[column.status]"
+            [cdkDropListConnectedTo]="dropListIds"
+            (cdkDropListDropped)="drop($event, column.status)"
+          >
+            @for (packageItem of packageService.packagesByStatus()[column.status]; track packageItem.id) {
+              <app-package-card
+                cdkDrag
+                [cdkDragData]="packageItem"
+                [class.updating]="packageService.updatingPackageId() === packageItem.id"
+                [packageItem]="packageItem"
+              />
+            } @empty {
+              <p class="empty">Sin paquetes</p>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  }
+</main>
