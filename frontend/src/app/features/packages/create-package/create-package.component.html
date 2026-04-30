@@ -1,0 +1,126 @@
+<main class="page">
+  <header>
+    <div>
+      <p>SmartShip</p>
+      <h1>Crear paquete</h1>
+    </div>
+    <a routerLink="/board">Volver al tablero</a>
+  </header>
+
+  <form [formGroup]="packageForm" (ngSubmit)="submit()" novalidate>
+    <section>
+      <h2>Datos del envio</h2>
+
+      <label class="field">
+        <span>Destinatario</span>
+        <input
+          type="text"
+          formControlName="destinatario"
+          autocomplete="name"
+          [class.invalid]="
+            packageForm.controls.destinatario.invalid && packageForm.controls.destinatario.touched
+          "
+        />
+      </label>
+
+      @if (packageForm.controls.destinatario.invalid && packageForm.controls.destinatario.touched) {
+        <p class="field-error">El destinatario es obligatorio.</p>
+      }
+
+      <label class="field">
+        <span>Peso kg</span>
+        <input
+          type="number"
+          min="0.01"
+          step="0.01"
+          formControlName="peso"
+          [class.invalid]="packageForm.controls.peso.invalid && packageForm.controls.peso.touched"
+        />
+      </label>
+
+      @if (packageForm.controls.peso.invalid && packageForm.controls.peso.touched) {
+        <p class="field-error">El peso debe ser mayor a 0.</p>
+      }
+    </section>
+
+    <section formGroupName="dimensiones">
+      <h2>Dimensiones</h2>
+
+      <div class="dimensions-grid">
+        <label class="field">
+          <span>Largo</span>
+          <input
+            type="number"
+            min="0.01"
+            step="0.01"
+            formControlName="largo"
+            [class.invalid]="
+              packageForm.controls.dimensiones.controls.largo.invalid &&
+              packageForm.controls.dimensiones.controls.largo.touched
+            "
+          />
+        </label>
+
+        <label class="field">
+          <span>Ancho</span>
+          <input
+            type="number"
+            min="0.01"
+            step="0.01"
+            formControlName="ancho"
+            [class.invalid]="
+              packageForm.controls.dimensiones.controls.ancho.invalid &&
+              packageForm.controls.dimensiones.controls.ancho.touched
+            "
+          />
+        </label>
+
+        <label class="field">
+          <span>Alto</span>
+          <input
+            type="number"
+            min="0.01"
+            step="0.01"
+            formControlName="alto"
+            [class.invalid]="
+              packageForm.controls.dimensiones.controls.alto.invalid &&
+              packageForm.controls.dimensiones.controls.alto.touched
+            "
+          />
+        </label>
+      </div>
+
+      @if (
+        packageForm.controls.dimensiones.controls.largo.invalid &&
+        packageForm.controls.dimensiones.controls.largo.touched
+      ) {
+        <p class="field-error">El largo debe ser mayor a 0.</p>
+      }
+
+      @if (
+        packageForm.controls.dimensiones.controls.ancho.invalid &&
+        packageForm.controls.dimensiones.controls.ancho.touched
+      ) {
+        <p class="field-error">El ancho debe ser mayor a 0.</p>
+      }
+
+      @if (
+        packageForm.controls.dimensiones.controls.alto.invalid &&
+        packageForm.controls.dimensiones.controls.alto.touched
+      ) {
+        <p class="field-error">El alto debe ser mayor a 0.</p>
+      }
+    </section>
+
+    @if (errorMessage()) {
+      <p class="alert" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <div class="actions">
+      <a routerLink="/board">Cancelar</a>
+      <button type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Creando...' : 'Crear paquete' }}
+      </button>
+    </div>
+  </form>
+</main>

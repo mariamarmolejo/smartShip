@@ -21,4 +21,10 @@ export interface UpdatePackageStatusRequest {
   nuevoEstado: PackageStatus;
 }
 
+export interface CreatePackageRequest {
+  peso: number;
+  dimensiones: PackageDimensions;
+  destinatario: string;
+}
+
 export type PackagesByStatus = Record<PackageStatus, PackageModel[]>;

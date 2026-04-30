@@ -3,6 +3,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, catchError, finalize, of, tap, throwError } from 'rxjs';
 
 import {
+  CreatePackageRequest,
   PackageModel,
   PackageStatus,
   PackagesByStatus,
@@ -76,6 +77,16 @@ export class PackageService {
         return throwError(() => error);
       }),
       finalize(() => this.updatingPackageIdState.set(null))
+    );
+  }
+
+  createPackage(packageRequest: CreatePackageRequest): Observable<PackageModel> {
+    this.errorState.set(null);
+    return this.http.post<PackageModel>(PACKAGES_URL, packageRequest).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.errorState.set('No fue posible crear el paquete.');
+        return throwError(() => error);
+      })
     );
   }
 
