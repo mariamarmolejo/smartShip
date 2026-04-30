@@ -1,11 +1,14 @@
 package com.smartship.application.service.impl;
 
+import com.smartship.application.dto.paquete.ActualizarEstadoRequest;
 import com.smartship.application.dto.paquete.CrearPaqueteRequest;
 import com.smartship.application.dto.paquete.PaqueteResponse;
 import com.smartship.application.mapper.PaqueteMapper;
 import com.smartship.application.service.PaqueteService;
+import com.smartship.domain.exception.PaqueteNotFoundException;
 import com.smartship.domain.model.EstadoPaquete;
 import com.smartship.domain.model.Paquete;
+import com.smartship.domain.state.EstadoHandler;
 import com.smartship.infrastructure.persistence.PaqueteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +45,19 @@ public class PaqueteServiceImpl implements PaqueteService {
                 .stream()
                 .map(paqueteMapper::toResponse)
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public PaqueteResponse actualizarEstado(Long id, ActualizarEstadoRequest request) {
+        Paquete paquete = paqueteRepository.findById(id)
+                .orElseThrow(() -> new PaqueteNotFoundException(id));
+
+        EstadoPaquete nuevoEstado = EstadoHandler.para(paquete.getEstado())
+                .transicionar(request.nuevoEstado());
+
+        paquete.setEstado(nuevoEstado);
+        return paqueteMapper.toResponse(paqueteRepository.save(paquete));
     }
 
     private String generarTrackingId() {

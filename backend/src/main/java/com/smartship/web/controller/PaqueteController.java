@@ -1,5 +1,6 @@
 package com.smartship.web.controller;
 
+import com.smartship.application.dto.paquete.ActualizarEstadoRequest;
 import com.smartship.application.dto.paquete.CrearPaqueteRequest;
 import com.smartship.application.dto.paquete.PaqueteResponse;
 import com.smartship.application.service.PaqueteService;
@@ -34,5 +35,15 @@ public class PaqueteController {
     @Operation(summary = "Listar paquetes", description = "Devuelve todos los paquetes registrados")
     public ResponseEntity<List<PaqueteResponse>> listarPaquetes() {
         return ResponseEntity.ok(paqueteService.listarPaquetes());
+    }
+
+    @PatchMapping("/{id}/estado")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'REPARTIDOR')")
+    @Operation(summary = "Actualizar estado del paquete",
+               description = "Transiciones válidas: RECIBIDO→EN_TRANSITO, EN_TRANSITO→ENTREGADO. Saltos prohibidos retornan 422.")
+    public ResponseEntity<PaqueteResponse> actualizarEstado(
+            @PathVariable Long id,
+            @Valid @RequestBody ActualizarEstadoRequest request) {
+        return ResponseEntity.ok(paqueteService.actualizarEstado(id, request));
     }
 }
