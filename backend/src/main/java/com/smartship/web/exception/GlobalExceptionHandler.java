@@ -1,5 +1,7 @@
 package com.smartship.web.exception;
 
+import com.smartship.domain.exception.PaqueteNotFoundException;
+import com.smartship.domain.exception.TransicionNoPermitidaException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,19 @@ public class GlobalExceptionHandler {
             AccessDeniedException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.FORBIDDEN, "Acceso denegado",
                 "No tiene permisos para realizar esta acción", request.getRequestURI());
+    }
+
+    @ExceptionHandler(PaqueteNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePaqueteNotFound(
+            PaqueteNotFoundException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.NOT_FOUND, "No encontrado", ex.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(TransicionNoPermitidaException.class)
+    public ResponseEntity<ErrorResponse> handleTransicionNoPermitida(
+            TransicionNoPermitidaException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.UNPROCESSABLE_ENTITY, "Transición no permitida",
+                ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(Exception.class)
